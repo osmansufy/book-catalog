@@ -7,11 +7,12 @@ const Register = () => {
             <Paper
                 elevation={3}
                 sx={{
-                    width: '80%',
+                    width: '60%',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '1rem',
                     mx: 'auto',
+                    p: '1rem',
                 }}
 
             >

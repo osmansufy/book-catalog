@@ -1,4 +1,5 @@
 import App from "@/App";
+import AllBooks from "@/pages/AllBooks/AllBooks";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
 import Register from "@/pages/Register/Register";
@@ -20,6 +21,10 @@ const routes = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/books",
+        element: <AllBooks />,
       }
     ],
   },

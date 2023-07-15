@@ -16,6 +16,11 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import Account from './Account';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { useState } from 'react';
+import { setUser } from '@/redux/features/user/userSlice';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -58,7 +63,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const { user } = useAppSelector(state => state.user)
+
+    const dispatch = useAppDispatch()
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
         React.useState<null | HTMLElement>(null);
 
@@ -77,6 +85,15 @@ const Navbar = () => {
         setAnchorEl(null);
         handleMobileMenuClose();
     };
+
+    const handleSignOut = () => {
+        setAnchorEl(null);
+        handleMobileMenuClose();
+        dispatch(setUser({
+            email: null,
+        }))
+        signOut(auth)
+    }
 
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget);
@@ -99,8 +116,13 @@ const Navbar = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{
+                user?.email
+            }
+            </MenuItem>
+            <MenuItem onClick={handleSignOut}>
+                Logout
+            </MenuItem>
         </Menu>
     );
 

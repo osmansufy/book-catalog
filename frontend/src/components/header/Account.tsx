@@ -1,7 +1,9 @@
+import { useAppSelector } from '@/redux/hook';
 import { AccountCircle } from '@mui/icons-material';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Badge, Box, IconButton } from '@mui/material';
+import { Badge, Box, Button, ButtonGroup, IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Account = ({
     handleProfileMenuOpen,
@@ -10,6 +12,38 @@ const Account = ({
     handleProfileMenuOpen: (event: React.MouseEvent<HTMLElement>) => void,
     menuId: string
 }) => {
+    const { user } = useAppSelector(state => state.user)
+
+    if (user.email === null) {
+        return (
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                {/*  login or register button*/}
+                <ButtonGroup variant="contained" sx={{
+                    display: { xs: 'none', md: 'flex' },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: '10px'
+                }} >
+                    <Button
+                        color="secondary"
+                    >
+                        <Link to="/login"
+                            style={{ color: 'white' }}
+                        >Login</Link>
+                    </Button>
+                    <Button href="/register"
+                        color="warning"
+                    >
+                        <Link to="/register"
+                            style={{ color: 'white' }}
+                        >Register</Link>
+                    </Button>
+                </ButtonGroup>
+
+            </Box>
+        )
+    }
+
     return (
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">

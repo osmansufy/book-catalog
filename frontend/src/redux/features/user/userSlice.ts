@@ -46,7 +46,7 @@ export const createUser = createAsyncThunk(
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (data: RegisterData) => {
+  async (data: { email: string; [key: string]: any }) => {
     const { email, password } = data;
 
     const response = await signInWithEmailAndPassword(auth, email, password);
@@ -59,7 +59,13 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<RegisterData>) => {
+    setUser: (
+      state,
+      action: PayloadAction<{
+        email: string | null;
+        [key: string]: any;
+      }>
+    ) => {
       state.user = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
