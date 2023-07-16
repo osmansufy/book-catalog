@@ -34,22 +34,6 @@ const BookSchema = new Schema({
     required: true,
   },
 
-  reviews: [
-    {
-      reviewer: {
-        type: String,
-        required: true,
-      },
-      rating: {
-        type: Number,
-        required: true,
-      },
-      comment: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
   publicationDate: {
     type: Date,
     required: true,

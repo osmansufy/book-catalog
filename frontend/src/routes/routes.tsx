@@ -2,6 +2,7 @@ import App from "@/App";
 import AllBooks from "@/pages/AllBooks/AllBooks";
 import Home from "@/pages/Home/Home";
 import Login from "@/pages/Login/Login";
+import NewBook from "@/pages/NewBook/NewBook";
 import Register from "@/pages/Register/Register";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -25,6 +26,18 @@ const routes = createBrowserRouter([
       {
         path: "/books",
         element: <AllBooks />,
+      },
+      {
+        path: "/books/:id",
+        element: <AllBooks />,
+      },
+      {
+        path: "/books/:id/edit",
+        element: <AllBooks />,
+      },
+      {
+        path: "books/new",
+        element: <NewBook />,
       }
     ],
   },

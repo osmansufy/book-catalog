@@ -1,4 +1,4 @@
-import { EBOOK_GENRE } from "../../../interfaces/enums";
+import { EBOOK_GENRE } from "./enum";
 
 export interface IBook {
   title: string;
