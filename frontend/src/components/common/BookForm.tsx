@@ -1,26 +1,58 @@
+import WithIdToken from "@/HOC/withIdToken";
+import { useAddBookMutation } from "@/redux/features/books/bookApi";
 import { IBook } from "@/shared/interface";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Grid, MenuItem, TextField } from "@mui/material";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { NewBookSchema, bookGenres, fieldNames, formFields, newBook } from "./helper";
-const NewBookForm = () => {
+import { IBookFormProps, NewBookSchema, bookGenres, fieldNames, formFields } from "./helper";
+
+const BookForm = ({ idToken, defaultBookValues, isEdit, onSubmit }: IBookFormProps) => {
+
+
+
     const {
         handleSubmit,
         formState: { errors },
-        control
+        control,
+        reset,
+        setValue
     } = useForm<IBook>({
         resolver: zodResolver(NewBookSchema),
         mode: "all",
-        defaultValues: newBook,
+        defaultValues: defaultBookValues,
     });
-    console.log(errors)
+    useEffect(() => {
+        if (!defaultBookValues) return
+        const { title, author, genre, publicationDate } = defaultBookValues;
+        const bookPublicationDate = new Date(publicationDate).toISOString().substring(0, 10)
+        setValue("title", title)
+        setValue("author.name", author?.name || "")
+        setValue("author.email", author?.email || "")
+        setValue("genre", genre)
+        setValue("publicationDate", bookPublicationDate as any)
+    }, [defaultBookValues, setValue])
+
+
+
+    const onHandleNewBook = async (data: IBook) => {
+
+        try {
+            if (idToken) {
+                await onSubmit(data, idToken)
+            }
+            if (!isEdit) {
+                reset()
+            }
+        } catch (error) {
+            console.log(error)
+
+        }
+    }
 
     return (
         <Box my={4} >
-            <form onSubmit={handleSubmit((data) => {
-                data.publicationDate = new Date(data.publicationDate);
-                console.log(data)
-            })}>
+            <form onSubmit={handleSubmit(onHandleNewBook)}>
                 <Grid container spacing={2}>
                     {
                         formFields.map((fieldItem) => {
@@ -30,11 +62,17 @@ const NewBookForm = () => {
                                         key={fieldItem.name}
                                         control={control}
                                         name={fieldItem["name"] as fieldNames}
+
                                         render={({ field }) => {
                                             return (
                                                 <TextField
                                                     {...field}
+                                                    inputProps={{
+                                                        readOnly: fieldItem.readOnly
+                                                    }}
+                                                    placeholder={fieldItem.placeholder}
                                                     label={fieldItem.label}
+                                                    required={fieldItem.required}
                                                     variant="outlined"
                                                     fullWidth
                                                     {
@@ -50,11 +88,7 @@ const NewBookForm = () => {
                                                         )
                                                     }
                                                     }
-                                                    {
-                                                    ...fieldItem.type === "date" && {
-                                                        format: "dd/MM/yyyy"
-                                                    }
-                                                    }
+
                                                     type={fieldItem.type}
                                                     error={!!errors[fieldItem.name as keyof IBook]}
                                                     helperText={errors[fieldItem.name as keyof IBook]?.message}
@@ -78,7 +112,9 @@ const NewBookForm = () => {
                 <Button type="submit" sx={{
                     marginTop: 2
                 }} variant="contained" color="primary">
-                    Submit
+                    {
+                        isEdit ? "Update" : "Create"
+                    }
                 </Button>
             </form>
         </Box>
@@ -86,4 +122,4 @@ const NewBookForm = () => {
     )
 }
 
-export default NewBookForm
+export default WithIdToken(BookForm)

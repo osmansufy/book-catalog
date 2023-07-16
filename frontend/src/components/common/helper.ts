@@ -2,16 +2,6 @@ import { EBOOK_GENRE } from "@/shared/enum";
 import { IBook } from "@/shared/interface";
 import { z } from "zod";
 
-export const newBook: IBook = {
-  title: "",
-  author: {
-    name: "",
-    email: "",
-  },
-  genre: EBOOK_GENRE.FANTASY,
-  publicationDate: new Date(),
-};
-
 export const NewBookSchema: z.Schema<IBook> = z.object({
   title: z.string().min(3).max(50),
   author: z.object({
@@ -31,6 +21,7 @@ export interface IFormFields {
   placeholder: string;
   required: boolean;
   options?: string[];
+  readOnly?: boolean;
 }
 export const formFields: IFormFields[] = [
   {
@@ -53,6 +44,7 @@ export const formFields: IFormFields[] = [
     type: "email",
     placeholder: "Enter author email",
     required: true,
+    readOnly: true,
   },
   {
     name: "genre",
@@ -70,3 +62,10 @@ export const formFields: IFormFields[] = [
     required: true,
   },
 ];
+
+export interface IBookFormProps {
+  idToken?: string;
+  isEdit: boolean;
+  onSubmit: (book: IBook, idToken: string) => void;
+  defaultBookValues?: IBook;
+}

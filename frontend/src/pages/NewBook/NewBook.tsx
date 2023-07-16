@@ -1,7 +1,31 @@
-import NewBookForm from '@/components/NewBook/NewBookForm'
+import NewBookForm from '@/components/common/BookForm'
+import { useAddBookMutation } from '@/redux/features/books/bookApi';
+import { useAppSelector } from '@/redux/hook';
+import { EBOOK_GENRE } from '@/shared/enum';
+import { IBook } from '@/shared/interface';
 import { Paper, Typography } from '@mui/material'
 
 const NewBook = () => {
+
+    const { user } = useAppSelector(state => state.user)
+    const [addNewBook] = useAddBookMutation()
+
+    const createNewBook = async (data: IBook, idToken: string) => {
+        addNewBook({
+            book: data,
+            token: idToken
+        })
+
+    }
+    const bookDefaultValues: IBook = {
+        title: "",
+        author: {
+            name: "",
+            email: user?.email || "",
+        },
+        genre: EBOOK_GENRE.FANTASY,
+        publicationDate: new Date(),
+    };
     return (
         <Paper elevation={3}
             sx={{
@@ -12,7 +36,11 @@ const NewBook = () => {
         >
             <Typography variant="h4">New Book</Typography>
 
-            <NewBookForm />
+            <NewBookForm
+                defaultBookValues={bookDefaultValues}
+                onSubmit={createNewBook}
+                isEdit={false}
+            />
         </Paper>
     )
 }

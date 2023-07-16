@@ -11,13 +11,14 @@ const createBook = async (book: IBook) => {
 };
 
 const findAllBooks = async () => {
+  // with id
   const books = BookModel.find().lean();
 
   return books;
 };
 
 const findBookById = async (id: string) => {
-  const findBook = BookModel.findById(id).lean();
+  const findBook = BookModel.findOne({ _id: id }).lean();
 
   return findBook;
 };
