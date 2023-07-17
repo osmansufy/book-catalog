@@ -2,11 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import admin from "../../../lib/firebase/firebase";
 
 const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
+  console.log(req.headers.authorization)
   try {
     const token =
       req.headers.authorization && req.headers.authorization.split(" ")[1];
 
     const decodeToken = await admin.auth().verifyIdToken(token!);
+    console.log(decodeToken)
     req.body.user = decodeToken;
     next();
   } catch (error) {

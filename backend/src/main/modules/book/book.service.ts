@@ -12,13 +12,13 @@ const createBook = async (book: IBook) => {
 
 const findAllBooks = async () => {
   // with id
-  const books = BookModel.find().lean();
+  const books = BookModel.find()
 
   return books;
 };
 
 const findBookById = async (id: string) => {
-  const findBook = BookModel.findOne({ _id: id }).lean();
+  const findBook = BookModel.findOne({ _id: id })
 
   return findBook;
 };
@@ -26,7 +26,7 @@ const findBookById = async (id: string) => {
 const updateBook = async (id: string, book: IBook, user: IAuthor) => {
   // check if the user is the author of the book
 
-  const checkBook = await BookModel.findById(id).lean();
+  const checkBook = await BookModel.findById(id)
 
   // if checkBook is null, throw an error
 
@@ -43,9 +43,9 @@ const updateBook = async (id: string, book: IBook, user: IAuthor) => {
 
   // if the user is the author of the book, update the book
 
-  const updateBook = BookModel.findByIdAndUpdate(id, book, {
+  const updateBook = BookModel.findOneAndUpdate({ _id: id }, book, {
     new: true,
-  }).lean();
+  })
 
   return updateBook;
 };
@@ -53,7 +53,7 @@ const updateBook = async (id: string, book: IBook, user: IAuthor) => {
 const deleteBook = async (id: string, user: IAuthor) => {
   // check if the user is the author of the book
 
-  const checkBook = await BookModel.findById(id).lean();
+  const checkBook = await BookModel.findById(id)
 
   // if checkBook is null, throw an error
 
@@ -70,7 +70,7 @@ const deleteBook = async (id: string, user: IAuthor) => {
 
   // if the user is the author of the book, delete the book
 
-  const deleteBook = BookModel.findByIdAndDelete(id).lean();
+  const deleteBook = BookModel.findByIdAndDelete(id)
 
   return deleteBook;
 };
@@ -84,7 +84,7 @@ const searchBooks = async (search: string) => {
       { "author.name": { $regex: search, $options: "i" } },
       { genre: { $regex: search, $options: "i" } },
     ],
-  }).lean();
+  })
 
   return searchBooks;
 };
@@ -97,7 +97,7 @@ const filterBooks = async (filter: IBookFilter) => {
       { genre: { $regex: filter.genre, $options: "i" } },
       { publicationDate: { $regex: filter.year, $options: "i" } },
     ],
-  }).lean();
+  })
 
   return filterBooks;
 };

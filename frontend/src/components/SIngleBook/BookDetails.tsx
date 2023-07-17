@@ -1,9 +1,10 @@
-import React from 'react';
-import { Card, CardContent, Typography, Box, Button, Paper } from '@mui/material';
-import { IBook } from '@/shared/interface';
-import { Link } from 'react-router-dom';
-import { useDeleteBookMutation } from '@/redux/features/books/bookApi';
 import WithIdToken from '@/HOC/withIdToken';
+import { useDeleteBookMutation } from '@/redux/features/books/bookApi';
+import { IBook } from '@/shared/interface';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import CommonModal from '../common/CommonModal';
 
 interface BookDetailsProps {
     book: IBook
@@ -13,10 +14,24 @@ interface BookDetailsProps {
 const BookDetails: React.FC<BookDetailsProps> = ({ book, idToken }) => {
 
 
+const [modalOpen, setModalOpen] = useState(false)
+    const handleModalOpen = () => {
+        setModalOpen(true)
+    }
+    const handleModalClose = () => {
+        setModalOpen(false)
+    }
 
-    const [deleteBook] = useDeleteBookMutation()
+
+    const [deleteBook,{
+        isLoading: isDeleting,
+        isSuccess: isDeleted,
+        isError: isDeleteError,
+        error: deleteError
+    }] = useDeleteBookMutation()
     const handleDelete = async () => {
         await deleteBook({ id: book._id, token: idToken })
+        setModalOpen(false)
     }
     if (!book) {
         return <Typography variant="h5">Book not found</Typography>;
@@ -24,7 +39,23 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, idToken }) => {
     const { title, author, genre, publicationDate } = book;
     const bookPublicationDate = new Date(publicationDate)
     return (
+        <>
         <Paper elevation={3} sx={{ padding: 2, margin: 'auto' }}>
+            {
+                isDeleting && <Typography variant="h4">Deleting...</Typography>
+
+            }{
+                isDeleted && <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="h4">Deleted successfully</Typography>
+                    <Button variant="contained" component={Link} to="/books">
+                        Back to List
+                    </Button>
+                </Box>
+            }
+            {
+                isDeleteError && <Typography variant="h4">Something is wrong</Typography>
+            }
+
             <Typography variant="h5" component="div">
                 {title}
             </Typography>
@@ -57,11 +88,17 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, idToken }) => {
             <Box mt={2}>
                 <Button variant="contained" color="primary"
                     component={Link} to={`/books/${book._id}/edit`}
+                    sx={{
+                        marginRight: '10px'
+                    }}
                 >
                     Edit
                 </Button>
                 <Button variant="contained" color="error"
-                    onClick={handleDelete}
+                    onClick={handleModalOpen}
+                    sx={{
+                        marginRight: '10px'
+                    }}
                 >
                     Delete
                 </Button>
@@ -69,7 +106,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, idToken }) => {
                     Back to List
                 </Button>
             </Box>
+
         </Paper>
+<CommonModal open={modalOpen} handleClose={handleModalClose} title="Delete Book" modalMsg="Are you sure you want to delete this book?" handleConfirm={handleDelete} />
+        </>
     );
 };
 

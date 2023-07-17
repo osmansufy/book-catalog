@@ -18,9 +18,9 @@ const LoginForm = () => {
     } = useForm();
     const dispatch = useAppDispatch()
 
-    const onHandleSubmit = (data: any) => {
+    const onHandleSubmit = async (data: any) => {
         try {
-            dispatch(login({
+           await dispatch(login({
                 email: data.email,
                 password: data.password
             }))

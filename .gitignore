@@ -1,6 +1,8 @@
 # ignore node_modules in  backend folder & frontend folder
 
 backend/node_modules
+backend/dist
+backend/book-catalog-559a6-firebase-adminsdk-nrke1-7324c33265.json
 frontend/node_modules
 
 # Logs
@@ -16,6 +18,7 @@ node_modules
 frontend/dist
 frontend/dist-ssr
 frontend/*.local
+frontend/*.env
 
 # Editor directories and files
 .vscode/*

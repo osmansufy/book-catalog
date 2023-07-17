@@ -1,16 +1,17 @@
 import { useAppSelector } from '@/redux/hook';
-import { AccountCircle } from '@mui/icons-material';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Badge, Box, Button, ButtonGroup, IconButton } from '@mui/material';
+import { Avatar, Box, Button, ButtonGroup, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const Account = ({
-    handleProfileMenuOpen,
-    menuId
+    settings,
+    anchorElUser,
+    handleOpenUserMenu,
+    handleCloseUserMenu
 }: {
-    handleProfileMenuOpen: (event: React.MouseEvent<HTMLElement>) => void,
-    menuId: string
+    settings: string[],
+    anchorElUser: HTMLElement | null,
+    handleOpenUserMenu: (event: React.MouseEvent<HTMLElement>) => void
+    handleCloseUserMenu: (menuId: string) => void
 }) => {
     const { user } = useAppSelector(state => state.user)
 
@@ -26,17 +27,13 @@ const Account = ({
                 }} >
                     <Button
                         color="secondary"
+                        component={Link} to="/login"
                     >
-                        <Link to="/login"
-                            style={{ color: 'white' }}
-                        >Login</Link>
+                        Login
                     </Button>
-                    <Button href="/register"
-                        color="warning"
+                    <Button component={Link} to="/register"
                     >
-                        <Link to="/register"
-                            style={{ color: 'white' }}
-                        >Register</Link>
+                        Register
                     </Button>
                 </ButtonGroup>
 
@@ -45,32 +42,34 @@ const Account = ({
     }
 
     return (
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                    <MailIcon />
-                </Badge>
-            </IconButton>
-            <IconButton
-                size="large"
-                aria-label="show 17 new notifications"
-                color="inherit"
+        <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+            </Tooltip>
+            <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
             >
-                <Badge badgeContent={17} color="error">
-                    <NotificationsIcon />
-                </Badge>
-            </IconButton>
-            <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-            >
-                <AccountCircle />
-            </IconButton>
+                {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+                        <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                ))}
+            </Menu>
         </Box>
     )
 }
