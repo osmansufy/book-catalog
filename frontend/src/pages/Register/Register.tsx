@@ -1,11 +1,11 @@
 import RegisterForm from '@/components/Register/RegisterForm'
 import { useAppSelector } from '@/redux/hook'
 import { Box, Paper } from '@mui/material'
-import { useLocation, Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 
 const Register = () => {
 
-    const { user, isLoading } = useAppSelector(state => state.user)
+    const { user } = useAppSelector(state => state.user)
 
     const { pathname } = useLocation()
     if (user.email) {

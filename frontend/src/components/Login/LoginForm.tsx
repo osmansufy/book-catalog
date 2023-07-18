@@ -10,9 +10,7 @@ const LoginForm = () => {
 
 
     const {
-        register,
         handleSubmit,
-        formState: { errors },
         control,
         reset
     } = useForm();
@@ -20,7 +18,7 @@ const LoginForm = () => {
 
     const onHandleSubmit = async (data: any) => {
         try {
-           await dispatch(login({
+            await dispatch(login({
                 email: data.email,
                 password: data.password
             }))

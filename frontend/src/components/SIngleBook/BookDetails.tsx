@@ -14,7 +14,7 @@ interface BookDetailsProps {
 const BookDetails: React.FC<BookDetailsProps> = ({ book, idToken }) => {
 
 
-const [modalOpen, setModalOpen] = useState(false)
+    const [modalOpen, setModalOpen] = useState(false)
     const handleModalOpen = () => {
         setModalOpen(true)
     }
@@ -23,11 +23,10 @@ const [modalOpen, setModalOpen] = useState(false)
     }
 
 
-    const [deleteBook,{
+    const [deleteBook, {
         isLoading: isDeleting,
         isSuccess: isDeleted,
         isError: isDeleteError,
-        error: deleteError
     }] = useDeleteBookMutation()
     const handleDelete = async () => {
         await deleteBook({ id: book._id, token: idToken })
@@ -40,38 +39,38 @@ const [modalOpen, setModalOpen] = useState(false)
     const bookPublicationDate = new Date(publicationDate)
     return (
         <>
-        <Paper elevation={3} sx={{ padding: 2, margin: 'auto' }}>
-            {
-                isDeleting && <Typography variant="h4">Deleting...</Typography>
+            <Paper elevation={3} sx={{ padding: 2, margin: 'auto' }}>
+                {
+                    isDeleting && <Typography variant="h4">Deleting...</Typography>
 
-            }{
-                isDeleted && <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="h4">Deleted successfully</Typography>
-                    <Button variant="contained" component={Link} to="/books">
-                        Back to List
-                    </Button>
-                </Box>
-            }
-            {
-                isDeleteError && <Typography variant="h4">Something is wrong</Typography>
-            }
+                }{
+                    isDeleted && <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="h4">Deleted successfully</Typography>
+                        <Button variant="contained" component={Link} to="/books">
+                            Back to List
+                        </Button>
+                    </Box>
+                }
+                {
+                    isDeleteError && <Typography variant="h4">Something is wrong</Typography>
+                }
 
-            <Typography variant="h5" component="div">
-                {title}
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-                Author: {author.name} {/* Assuming the author object contains the name property */}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Genre: {genre}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                Publication Date: {bookPublicationDate.toDateString()}
-            </Typography>
+                <Typography variant="h5" component="div">
+                    {title}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                    Author: {author.name} {/* Assuming the author object contains the name property */}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Genre: {genre}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Publication Date: {bookPublicationDate.toDateString()}
+                </Typography>
 
-            <Box mt={2}>
-                <Typography variant="h6">Reviews:</Typography>
-                {/* {reviews.length > 0 ? (
+                <Box mt={2}>
+                    <Typography variant="h6">Reviews:</Typography>
+                    {/* {reviews.length > 0 ? (
           reviews.map((review, index) => (
             <Box key={index} mt={1}>
               <Typography variant="subtitle2" color="text.secondary">
@@ -83,32 +82,32 @@ const [modalOpen, setModalOpen] = useState(false)
         ) : (
           <Typography variant="body2">No reviews yet.</Typography>
         )} */}
-            </Box>
+                </Box>
 
-            <Box mt={2}>
-                <Button variant="contained" color="primary"
-                    component={Link} to={`/books/${book._id}/edit`}
-                    sx={{
-                        marginRight: '10px'
-                    }}
-                >
-                    Edit
-                </Button>
-                <Button variant="contained" color="error"
-                    onClick={handleModalOpen}
-                    sx={{
-                        marginRight: '10px'
-                    }}
-                >
-                    Delete
-                </Button>
-                <Button variant="contained" component={Link} to="/books">
-                    Back to List
-                </Button>
-            </Box>
+                <Box mt={2}>
+                    <Button variant="contained" color="primary"
+                        component={Link} to={`/books/${book._id}/edit`}
+                        sx={{
+                            marginRight: '10px'
+                        }}
+                    >
+                        Edit
+                    </Button>
+                    <Button variant="contained" color="error"
+                        onClick={handleModalOpen}
+                        sx={{
+                            marginRight: '10px'
+                        }}
+                    >
+                        Delete
+                    </Button>
+                    <Button variant="contained" component={Link} to="/books">
+                        Back to List
+                    </Button>
+                </Box>
 
-        </Paper>
-<CommonModal open={modalOpen} handleClose={handleModalClose} title="Delete Book" modalMsg="Are you sure you want to delete this book?" handleConfirm={handleDelete} />
+            </Paper>
+            <CommonModal open={modalOpen} handleClose={handleModalClose} title="Delete Book" modalMsg="Are you sure you want to delete this book?" handleConfirm={handleDelete} />
         </>
     );
 };

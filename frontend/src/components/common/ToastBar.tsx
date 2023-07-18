@@ -23,6 +23,7 @@ const ToastBar = ({
             return;
         }
 
+        console.log(event)
         setOpen(false);
     };
 

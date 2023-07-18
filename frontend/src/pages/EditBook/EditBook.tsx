@@ -20,7 +20,6 @@ const EditBook = () => {
         isLoading: isUpdating,
         isSuccess: isUpdated,
         isError: isUpdateError,
-        error: updateError
     }] = useUpdateBookMutation()
 
     const updateNewBook = async (data: IBook, idToken: string) => {

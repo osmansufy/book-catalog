@@ -1,19 +1,18 @@
-import NewBookForm from '@/components/common/BookForm'
+import NewBookForm from '@/components/common/BookForm';
 import ToastBar from '@/components/common/ToastBar';
 import { useAddBookMutation } from '@/redux/features/books/bookApi';
 import { useAppSelector } from '@/redux/hook';
 import { EBOOK_GENRE } from '@/shared/enum';
 import { IBook } from '@/shared/interface';
-import { Paper, Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material';
 
 const NewBook = () => {
 
     const { user } = useAppSelector(state => state.user)
-    const [addNewBook,{
+    const [addNewBook, {
         isLoading,
         isError,
         isSuccess,
-        error,
     }] = useAddBookMutation()
 
     const createNewBook = async (data: IBook, idToken: string) => {
@@ -41,7 +40,7 @@ const NewBook = () => {
             }}
         >
 
-{
+            {
                 isLoading && <Typography variant="h4">Loading...</Typography>
 
             }

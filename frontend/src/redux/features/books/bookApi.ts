@@ -24,7 +24,7 @@ const booksApi = api.injectEndpoints({
     }),
     getBookById: builder.query({
       query: (id) => `/books/${id}`,
-      providesTags: (result, error, id) => [{ type: "Books", id }],
+      providesTags: (id) => [{ type: "Books", id }],
     }),
     addBook: builder.mutation({
       query: ({ book, token }) => ({
@@ -51,7 +51,7 @@ const booksApi = api.injectEndpoints({
         },
       }),
 
-      invalidatesTags: (result, error, { id }) => [{ type: "Books", id }],
+      invalidatesTags: ({ id }) => [{ type: "Books", id }],
     }),
     deleteBook: builder.mutation({
       query: ({ id, token }) => ({
@@ -61,7 +61,7 @@ const booksApi = api.injectEndpoints({
           Authorization: `Bearer ${token}`,
         },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Books", id }],
+      invalidatesTags: ({ id }) => [{ type: "Books", id }],
     }),
     filterBooks: builder.query({
       query: (filter) => ({
