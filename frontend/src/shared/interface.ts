@@ -12,3 +12,8 @@ export interface IAuthor {
   name: string;
   email: string;
 }
+
+export interface IBookFilter {
+  genre?: string;
+  year?: string | number;
+}

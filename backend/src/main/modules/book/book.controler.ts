@@ -40,10 +40,9 @@ const findBookById = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateBook = catchAsync(async (req: Request, res: Response) => {
-
-    const bookInfo=req.body.book;
-    const bookId=req.params.id;
-    const userInfo=req.body.user;
+  const bookInfo = req.body.book;
+  const bookId = req.params.id;
+  const userInfo = req.body.user;
   const book = await bookService.updateBook(bookId, bookInfo, userInfo);
 
   sendResponse(res, {
@@ -55,8 +54,8 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteBook = catchAsync(async (req: Request, res: Response) => {
-    const bookId=req.params.id;
-    const userInfo=req.body.user;
+  const bookId = req.params.id;
+  const userInfo = req.body.user;
   await bookService.deleteBook(bookId, userInfo);
 
   sendResponse(res, {
@@ -85,7 +84,7 @@ const searchBooks = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Books retrieved successfully",
+    message: `Books retrieved successfully for search query: ${req.query.q}`,
     data: books,
   });
 });

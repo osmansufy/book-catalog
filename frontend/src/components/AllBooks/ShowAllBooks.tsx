@@ -1,18 +1,41 @@
 import { IBook } from '@/shared/interface'
-import { Box, Grid } from '@mui/material'
+import { Box, CircularProgress, Grid } from '@mui/material'
+import { useState } from 'react'
 import BookCard from '../common/BookCard'
+import FilterBooks from './FilterBooks'
 
+const ShowAllBooks = ({ books,
 
-const ShowAllBooks = ({ books }: {
+}: {
     books: IBook[]
+
 }) => {
-    if (!books) return <div>No books found</div>
+
+    const [displayedBooks, setDisplayedBooks] = useState<IBook[]>(books)
+    const [booksLoading, setBooksLoading] = useState<boolean>()
+    if (!displayedBooks) return <div>No books found</div>
+
+    const handleLoading = (loading: boolean) => {
+        setBooksLoading(loading)
+    }
+
+
+    const fetchAllBooks = () => {
+        setDisplayedBooks(books)
+    }
+
+
     return (
         <Box my={4}>
-            Show All Books
-            <Grid container spacing={2}>
-                {
-                    books?.map((book: IBook) => {
+            <FilterBooks
+                setDisplayedBooks={setDisplayedBooks}
+                handleLoading={handleLoading}
+                fetchAllBooks={fetchAllBooks}
+            />
+            <Grid container my={4} spacing={2}>
+
+                {booksLoading ? <CircularProgress /> :
+                    displayedBooks?.map((book: IBook) => {
                         return (
                             <Grid item xs={12} md={6} key={book._id}>
                                 <BookCard book={book} />

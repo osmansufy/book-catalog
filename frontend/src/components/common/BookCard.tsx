@@ -21,23 +21,7 @@ const BookCard = ({ book }: {
     return (
         <Box sx={{ minWidth: 275 }}>
             <Card variant="outlined">
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                >
-                    {/* edit & delete */}
 
-                    <Link to={`/books/${book._id}/edit`}>
-                        <IconButton aria-label="settings"
-                            color="primary"
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </Link>
-                    <IconButton aria-label="settings" color="error">
-                        <DeleteOutline />
-                    </IconButton>
-                </Box>
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {

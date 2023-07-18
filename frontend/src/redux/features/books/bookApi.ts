@@ -71,9 +71,9 @@ const booksApi = api.injectEndpoints({
     }),
 
     searchBooks: builder.query({
-      query: (search) => ({
+      query: (q) => ({
         url: "/books/search",
-        params: search,
+        params: { q },
       }),
     }),
   }),

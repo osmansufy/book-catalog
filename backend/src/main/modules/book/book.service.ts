@@ -95,7 +95,9 @@ const filterBooks = async (filter: IBookFilter) => {
   const conditions = [];
 
   if (filter.genre) {
-    conditions.push({ genre: filter.genre });
+    conditions.push({
+      $eq: [{ $toLower: "$genre" }, filter.genre.toLowerCase()],
+    });
   }
 
   if (filter.year) {
