@@ -6,3 +6,9 @@ export enum EBOOK_GENRE {
   MYSTERY = "Mystery",
   DETECTIVE = "Detective",
 }
+
+export enum Nav_IDS {
+  BOOKS = "books",
+  NEW_BOOK = "new-book",
+  LOGOUT = "logout",
+}

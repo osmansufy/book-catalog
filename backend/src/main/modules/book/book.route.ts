@@ -6,9 +6,15 @@ const router = express.Router();
 
 router.get("/", bookController.findAllBooks);
 
-router.get("/:id", bookController.findBookById);
-
 router.post("/", bookValidation.verifyUser, bookController.createBook);
+
+// search for books by title or author name or genre
+router.get("/search", bookController.searchBooks);
+
+// filter books by genre or publication date
+router.get("/filter", bookController.findBooksByFilter);
+
+router.get("/:id", bookController.findBookById);
 
 router.patch("/:id", bookValidation.verifyUser, bookController.updateBook);
 

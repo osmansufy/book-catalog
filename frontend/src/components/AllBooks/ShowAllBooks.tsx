@@ -11,8 +11,8 @@ const ShowAllBooks = ({ books }: {
         <Box my={4}>
             Show All Books
             <Grid container spacing={2}>
-                {books &&
-                    books.map((book: IBook) => {
+                {
+                    books?.map((book: IBook) => {
                         return (
                             <Grid item xs={12} md={6} key={book._id}>
                                 <BookCard book={book} />

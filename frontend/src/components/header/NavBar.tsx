@@ -1,26 +1,41 @@
-import * as React from 'react';
+import { auth } from '@/lib/firebase';
+import { setUser } from '@/redux/features/user/userSlice';
+import AdbIcon from '@mui/icons-material/Adb';
+import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { signOut } from 'firebase/auth';
+import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import Account from './Account';
+import { Nav_IDS } from '@/shared/enum';
+import { Link, useNavigate } from 'react-router-dom';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = [
+    {
+        id: Nav_IDS.BOOKS,
+        title: 'Books',
+        path: '/books',
+    },
+    {
+        id: Nav_IDS.NEW_BOOK,
+        title: 'New Book',
+        path: '/books/new',
+    },
+]
+
 
 const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-
+    const router = useNavigate()
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -31,8 +46,21 @@ const Navbar = () => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
+    const dispatch = useDispatch()
+    const handleCloseUserMenu = async (menuId: Nav_IDS) => {
+        if (menuId === Nav_IDS.LOGOUT) {
+            dispatch(setUser({
+                email: null,
+            }))
+            signOut(auth)
+        } else if (menuId === Nav_IDS.BOOKS) {
+            router('/books')
+        } else if (menuId === Nav_IDS.NEW_BOOK) {
+            router('/books/new')
+        }
 
-    const handleCloseUserMenu = (menuId: string) => {
+
+
         setAnchorElUser(null);
     };
 
@@ -89,8 +117,10 @@ const Navbar = () => {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                <MenuItem key={page.id} >
+                                    <Link to={page.path} >
+                                        <Typography textAlign="center">{page.title}</Typography>
+                                    </Link>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -116,18 +146,19 @@ const Navbar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                            <Link to={page.path} key={page.id}>
+                                <Button
+
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    {page.title}
+                                </Button>
+                            </Link>
                         ))}
                     </Box>
 
                     <Account
-                        settings={settings}
+
                         handleOpenUserMenu={handleOpenUserMenu} handleCloseUserMenu={handleCloseUserMenu} anchorElUser={anchorElUser} />
                 </Toolbar>
             </Container>

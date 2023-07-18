@@ -1,17 +1,35 @@
 import { useAppSelector } from '@/redux/hook';
+import { Nav_IDS } from '@/shared/enum';
 import { Avatar, Box, Button, ButtonGroup, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+const settings = [
+    {
+        id: Nav_IDS.BOOKS,
+        title: 'Books',
+        path: '/books',
+    },
+    {
+        id: Nav_IDS.NEW_BOOK,
+        title: 'New Book',
+        path: '/books/new',
+    },
+    {
+        id: Nav_IDS.LOGOUT,
+        title: 'Logout',
+        path: '/logout',
+    },
 
+];
 const Account = ({
-    settings,
+
     anchorElUser,
     handleOpenUserMenu,
     handleCloseUserMenu
 }: {
-    settings: string[],
+
     anchorElUser: HTMLElement | null,
     handleOpenUserMenu: (event: React.MouseEvent<HTMLElement>) => void
-    handleCloseUserMenu: (menuId: string) => void
+    handleCloseUserMenu: (menuId: Nav_IDS) => void
 }) => {
     const { user } = useAppSelector(state => state.user)
 
@@ -65,8 +83,10 @@ const Account = ({
                 onClose={handleCloseUserMenu}
             >
                 {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
-                        <Typography textAlign="center">{setting}</Typography>
+                    <MenuItem key={setting.id} onClick={() => handleCloseUserMenu(setting.id)}>
+
+                        <Typography textAlign="center">{setting.title}</Typography>
+
                     </MenuItem>
                 ))}
             </Menu>

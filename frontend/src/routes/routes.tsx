@@ -7,6 +7,7 @@ import NewBook from "@/pages/NewBook/NewBook";
 import Register from "@/pages/Register/Register";
 import SingleBook from "@/pages/SingleBook/SingleBook";
 import { createBrowserRouter } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const routes = createBrowserRouter([
       },
       {
         path: "books/new",
-        element: <NewBook />,
+        element: <PrivateRoute children={<NewBook />} />,
       }
     ],
   },
