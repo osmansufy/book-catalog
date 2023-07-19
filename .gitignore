@@ -1,7 +1,6 @@
 # ignore node_modules in  backend folder & frontend folder
-
+# dependencies
 backend/book-catalog-559a6-firebase-adminsdk-nrke1-7324c33265.json
-backend/test.json
 backend/node_modules
 backend/dist
 frontend/node_modules
