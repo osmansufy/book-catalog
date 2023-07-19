@@ -61,7 +61,7 @@ const FilterBooks = ({
     console.log({ searchBooks })
     useEffect(() => {
         handleLoading(isFetching || isLoading || searchBooksLoading)
-    }, [handleLoading, isFetching, searchBooksLoading])
+    }, [handleLoading, isFetching, isLoading, searchBooksLoading])
 
     useEffect(() => {
         if (filterBooks) {
